@@ -20,4 +20,4 @@ COPY --from=builder /source/target/java-http-server-0.1.0-jar-with-dependencies.
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/app/server.jar"]
+ENTRYPOINT ["java", "-Dsun.net.httpserver.nodelay=true", "-jar", "/app/server.jar"]
