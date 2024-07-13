@@ -16,7 +16,7 @@ FROM amazoncorretto:21-al2023
 
 WORKDIR /app
 
-COPY --from=builder /source/target/*.jar server.jar
+COPY --from=builder /source/target/java-http-server-0.1.0-jar-with-dependencies.jar server.jar
 
 EXPOSE 8080
 
