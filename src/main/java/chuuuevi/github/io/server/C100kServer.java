@@ -13,23 +13,13 @@ import java.util.concurrent.Executors;
 
 public class C100kServer {
 
+    private HttpServer server;
+    private Counter counter;
 
-    public static void main(String[] args) throws IOException, ParseException {
-
-        System.out.println("args="+ Arrays.toString(args));
-
-        Options options = new Options();
-
-        options.addOption(null, "http-port", true, "HTTP Port");
-        CommandLineParser parser = new DefaultParser();
-        CommandLine cmd = parser.parse(options, args);
-
-        int port = cmd.hasOption("http-port") ? Integer.parseInt(cmd.getOptionValue("http-port")) : 22222;
-
-        Counter counter = new Counter();
-
-        var server = HttpServer.create(new InetSocketAddress(port), 0);
-        server.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
+    public C100kServer(int port, Counter counter) throws IOException {
+        this.counter = counter;
+        this.server = HttpServer.create(new InetSocketAddress(port), 0);
+        this.server.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
         server.createContext("/").setHandler(exchange -> {
 //            System.out.println("request "+ exchange.getRequestURI());
 
@@ -47,7 +37,24 @@ public class C100kServer {
                 os.write(respText);
             }
         });
-        server.start();
+        this.server.start();
         System.out.println("port=" + port);
+    }
+
+    public static int getHttpPort(String[] args) throws ParseException {
+        Options options = new Options();
+
+        options.addOption(null, "http-port", true, "HTTP Port");
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = parser.parse(options, args);
+        return cmd.hasOption("http-port") ? Integer.parseInt(cmd.getOptionValue("http-port")) : 22222;
+    }
+
+    public static void main(String[] args) throws IOException, ParseException {
+        Counter counter = new Counter();
+        int port = getHttpPort(args);
+
+        C100kServer server1 = new C100kServer(port, counter);
+        C100kServer server2 = new C100kServer(port + 1, counter);
     }
 }

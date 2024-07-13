@@ -1,9 +1,8 @@
 package chuuuevi.github.io.server.disruptor;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
-public class Event {
+public class Action {
 
     private boolean write;
     private long number;

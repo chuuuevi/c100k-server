@@ -9,24 +9,24 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 public class Counter {
-    protected final Disruptor<Event> disruptor;
+    protected final Disruptor<Action> disruptor;
 
     private long total;
 
     public Counter() {
         this.disruptor = new Disruptor<>(
-                Event::new,
+                Action::new,
                 (int) Math.pow(2, 20),
                 DaemonThreadFactory.INSTANCE,
                 ProducerType.MULTI,
                 new YieldingWaitStrategy()
         );
 
-        this.disruptor.handleEventsWith(this::onEvent);
+        this.disruptor.handleEventsWith(this::doAction);
         this.disruptor.start();
     }
 
-    private void onEvent(Event e, long disruptorSequence, boolean endOfBatch) {
+    private void doAction(Action e, long disruptorSequence, boolean endOfBatch) {
         if (e.isWrite()) {
             this.total += e.getNumber();
         } else {
@@ -38,16 +38,16 @@ public class Counter {
         e.clear();
     }
 
-    private void writeTranslator(Event event, long sequence, long val) {
-        event.setNumber(val);
-        event.setFuture(null);
-        event.setWrite(true);
+    private void writeTranslator(Action action, long sequence, long val) {
+        action.setNumber(val);
+        action.setFuture(null);
+        action.setWrite(true);
     }
 
-    private void readTranslator(Event event, long sequence, CompletableFuture<Long> future) {
-        event.setNumber(0);
-        event.setFuture(future);
-        event.setWrite(false);
+    private void readTranslator(Action action, long sequence, CompletableFuture<Long> future) {
+        action.setNumber(0);
+        action.setFuture(future);
+        action.setWrite(false);
     }
 
     public void dealt(final long val) {
