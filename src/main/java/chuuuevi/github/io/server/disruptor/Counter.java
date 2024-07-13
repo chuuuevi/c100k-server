@@ -23,6 +23,7 @@ public class Counter {
         );
 
         this.disruptor.handleEventsWith(this::onEvent);
+        this.disruptor.start();
     }
 
     private void onEvent(Event e, long disruptorSequence, boolean endOfBatch) {

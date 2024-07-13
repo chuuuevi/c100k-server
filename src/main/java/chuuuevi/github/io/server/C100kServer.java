@@ -31,6 +31,7 @@ public class C100kServer {
         var server = HttpServer.create(new InetSocketAddress(port), 0);
         server.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
         server.createContext("/").setHandler(exchange -> {
+//            System.out.println("request "+ exchange.getRequestURI());
 
             counter.dealt(1);
             Long number = null;
