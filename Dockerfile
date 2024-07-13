@@ -20,6 +20,4 @@ COPY --from=builder /source/target/java-http-server-0.1.0-jar-with-dependencies.
 
 EXPOSE 8080
 
-ENV JAVA_OPTS=""
-
-ENTRYPOINT ["java", "$JAVA_OPTS", "-jar", "/app/server.jar"]
+ENTRYPOINT ["java", "-jar", "/app/server.jar"]
