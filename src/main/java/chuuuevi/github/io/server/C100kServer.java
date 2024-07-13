@@ -54,7 +54,6 @@ public class C100kServer {
         Counter counter = new Counter();
         int port = getHttpPort(args);
 
-        C100kServer server1 = new C100kServer(port, counter);
-        C100kServer server2 = new C100kServer(port + 1, counter);
+        new C100kServer(port, counter);
     }
 }
