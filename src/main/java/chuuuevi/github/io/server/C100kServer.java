@@ -18,7 +18,7 @@ public class C100kServer {
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
 
-        int port = cmd.hasOption("http-port") ? Integer.parseInt(cmd.getOptionValue("http-port")) : 8080;
+        int port = cmd.hasOption("http-port") ? Integer.parseInt(cmd.getOptionValue("http-port")) : 22222;
 
         var body = "hello world".getBytes();
         var server = HttpServer.create(new InetSocketAddress(port), 0);
