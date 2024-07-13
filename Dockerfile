@@ -12,7 +12,7 @@ RUN mvn -DskipTests package
 
 # https://stackoverflow.com/questions/42208442/maven-docker-cache-dependencies
 
-FROM amazoncorretto:22-al2023
+FROM amazoncorretto:21-al2023
 
 WORKDIR /app
 
