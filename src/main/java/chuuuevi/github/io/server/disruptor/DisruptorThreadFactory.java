@@ -1,12 +1,16 @@
 package chuuuevi.github.io.server.disruptor;
 
 
+import chuuuevi.github.io.server.C100kServer;
 import net.openhft.affinity.AffinityLock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class DisruptorThreadFactory implements ThreadFactory {
+    private static final Logger log = LoggerFactory.getLogger(DisruptorThreadFactory.class);
 
     private final String threadNamePrefix;
     private final AtomicLong count;
@@ -29,6 +33,9 @@ public class DisruptorThreadFactory implements ThreadFactory {
         if (cpuAffinity) {
             thread = new Thread(null, () -> {
                 try (AffinityLock al = AffinityLock.acquireCore()) {
+                    log.error("newThread {} affinity lock bound={}, cpuId={}",
+                            Thread.currentThread().getName(), al.isBound(), al.cpuId());
+
                     runnable.run();
                 }
             }, name);

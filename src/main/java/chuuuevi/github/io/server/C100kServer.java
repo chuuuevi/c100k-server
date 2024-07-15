@@ -3,6 +3,8 @@ package chuuuevi.github.io.server;
 import chuuuevi.github.io.server.disruptor.Counter;
 import com.sun.net.httpserver.HttpServer;
 import org.apache.commons.cli.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -13,11 +15,11 @@ import java.util.concurrent.Executors;
 
 public class C100kServer {
 
+    private static final Logger log = LoggerFactory.getLogger(C100kServer.class);
+
     private HttpServer server;
-    private Counter counter;
 
     public C100kServer(int port, Counter counter) throws IOException {
-        this.counter = counter;
         this.server = HttpServer.create(new InetSocketAddress(port), 0);
         this.server.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
         server.createContext("/").setHandler(exchange -> {
@@ -38,7 +40,7 @@ public class C100kServer {
             }
         });
         this.server.start();
-        System.out.println("port=" + port);
+        log.info("port={}", port);
     }
 
     public static int getHttpPort(String[] args) throws ParseException {
