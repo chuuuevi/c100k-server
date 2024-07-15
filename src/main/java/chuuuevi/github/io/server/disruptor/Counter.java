@@ -17,7 +17,7 @@ public class Counter {
         this.disruptor = new Disruptor<>(
                 Action::new,
                 (int) Math.pow(2, 20),
-                DaemonThreadFactory.INSTANCE,
+                new DisruptorThreadFactory("counter", true),
                 ProducerType.MULTI,
                 new YieldingWaitStrategy()
         );
@@ -34,7 +34,6 @@ public class Counter {
                 e.getFuture().complete(this.total);
             }
         }
-
         e.clear();
     }
 

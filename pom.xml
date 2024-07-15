@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>chuuuevi.github.io</groupId>
-    <artifactId>java-http-server</artifactId>
+    <artifactId>c100k-server</artifactId>
     <version>0.1.0</version>
 
     <properties>
@@ -34,6 +34,11 @@
             <version>3.4.4</version>
         </dependency>
 
+        <dependency>
+            <groupId>net.openhft</groupId>
+            <artifactId>affinity</artifactId>
+            <version>3.23.2</version>
+        </dependency>
 
     </dependencies>
 
