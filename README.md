@@ -2,11 +2,11 @@
 
 ```bash
 docker build -t c100k .
-docker run --rm -it --network=host c100k --http-port=22221
+docker run --rm -it --network=host c100k --http-port=22221 --server-type=vertx
 ```
 
 ```bash
-docker run --rm -it qyvlik/wrk -t 2 -c 128 -d 30s http://172.31.40.214:22221
+docker run --rm -it qyvlik/wrk -t 2 -c 128 -d 30s http://172.31.15.175:22221
 ```
 
 ---
