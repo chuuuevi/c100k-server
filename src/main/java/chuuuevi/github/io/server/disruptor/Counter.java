@@ -58,4 +58,10 @@ public class Counter {
         this.disruptor.publishEvent(this::readTranslator, future);
         return future.get();
     }
+
+    public CompletableFuture<Long> readAsync() {
+        CompletableFuture<Long> future = new CompletableFuture<>();
+        this.disruptor.publishEvent(this::readTranslator, future);
+        return future;
+    }
 }

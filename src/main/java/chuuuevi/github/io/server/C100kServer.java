@@ -24,12 +24,12 @@ public class C100kServer {
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
         int port = cmd.hasOption("http-port") ? Integer.parseInt(cmd.getOptionValue("http-port")) : 22222;
-        String type = cmd.hasOption("server-type") ? cmd.getOptionValue("server-type") : "vertx";
+        String type = cmd.hasOption("server-type") ? cmd.getOptionValue("server-type") : "jdk21";
 
         Counter counter = new Counter();
 
         if (type .equals("jdk21")) {
-            new JDK21Server(port, counter);
+            new JDK21Server(port, counter, true);
         } else {
             new VertxServer(port, counter);
         }

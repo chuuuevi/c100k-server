@@ -2,7 +2,7 @@
 
 ```bash
 docker build -t c100k .
-docker run --rm -it --network=host c100k --http-port=22221 --server-type=vertx
+docker run --rm -it --network=host c100k --http-port=22221 --server-type=jdk21
 ```
 
 ```bash
