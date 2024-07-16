@@ -35,6 +35,12 @@
         </dependency>
 
         <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-web</artifactId>
+            <version>4.5.8</version>
+        </dependency>
+
+        <dependency>
             <groupId>net.openhft</groupId>
             <artifactId>affinity</artifactId>
             <version>3.23.3</version>
@@ -56,6 +62,8 @@
             <artifactId>slf4j-simple</artifactId>
             <version>2.0.13</version>
         </dependency>
+
+
 
     </dependencies>
 
