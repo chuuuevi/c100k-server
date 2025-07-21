@@ -1,7 +1,7 @@
 package chuuuevi.github.io.server.disruptor;
 
 import chuuuevi.github.io.server.thread.CpuAffinityThreadFactory;
-import com.lmax.disruptor.YieldingWaitStrategy;
+import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 
@@ -18,7 +18,7 @@ public class Counter {
                 (int) Math.pow(2, 20),
                 new CpuAffinityThreadFactory("counter-", true),
                 ProducerType.MULTI,
-                new YieldingWaitStrategy()
+                new BlockingWaitStrategy()
         );
 
         this.disruptor.handleEventsWith(this::handleEvent);
