@@ -4,19 +4,13 @@ import chuuuevi.github.io.server.disruptor.Counter;
 import chuuuevi.github.io.server.server.JDK21Server;
 import chuuuevi.github.io.server.server.VertxServer;
 import org.apache.commons.cli.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class C100kServer {
 
-    private static final Logger log = LoggerFactory.getLogger(C100kServer.class);
-
 
     public static void main(String[] args) throws IOException, ParseException {
-
-
         Options options = new Options();
         options.addOption(null, "http-port", true, "HTTP Port");
         options.addOption(null, "server-type", true, "vertx or jdk21");
@@ -28,10 +22,12 @@ public class C100kServer {
 
         Counter counter = new Counter();
 
-        if (type .equals("jdk21")) {
-            new JDK21Server(port, counter, true);
+        if (type.equals("jdk21")) {
+            JDK21Server server = new JDK21Server(port, counter);
+            server.start();
         } else {
-            new VertxServer(port, counter);
+            VertxServer server = new VertxServer(port, counter);
+            server.start();
         }
     }
 }

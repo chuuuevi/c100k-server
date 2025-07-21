@@ -1,4 +1,34 @@
 
+# server is MacBookPro M4(MacOS 15.3.1)
+
+## jdk21-server with virtual thread
+
+```text
+wrk -t 4 -c 128 -d 30s http://127.0.0.1:22222
+Running 30s test @ http://127.0.0.1:22222
+  4 threads and 128 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     1.16ms    3.54ms 144.71ms   98.79%
+    Req/Sec    35.67k     5.11k   41.03k    92.08%
+  4260317 requests in 30.04s, 332.10MB read
+  Socket errors: connect 0, read 138, write 0, timeout 0
+Requests/sec: 141819.38
+Transfer/sec:     11.06MB
+```
+
+```text
+wrk -t 2 -c 190 -d 30s http://127.0.0.1:22222
+Running 30s test @ http://127.0.0.1:22222
+  2 threads and 190 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     0.93ms  389.67us   4.94ms   78.39%
+    Req/Sec    86.81k     2.76k   92.89k    72.83%
+  5183111 requests in 30.00s, 410.27MB read
+  Socket errors: connect 0, read 160, write 0, timeout 0
+Requests/sec: 172760.00
+Transfer/sec:     13.67MB
+```
+
 
 # server is c6i.2xlarge, wrk is t3.xlarge
 

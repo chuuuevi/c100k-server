@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.ref.WeakReference;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ExecutionException;
@@ -26,7 +28,8 @@ class CounterTest {
         Instant begin = Instant.now();
         while (iter-- > 0) {
             counter.dealt(1);
-            counter.read();
+            counter.readAsync()
+                    .get();
         }
         Instant end = Instant.now();
 
@@ -50,14 +53,16 @@ class CounterTest {
             executor.execute(()->{
                 counter.dealt(1);
                 try {
-                    counter.read();
+                    counter.readAsync()
+                            .get();
                 } catch (Exception e) {
 
                 }
             });
         }
 
-        counter.read();
+        counter.readAsync()
+                .get();
 
         Instant end = Instant.now();
 
@@ -84,7 +89,8 @@ class CounterTest {
             });
         }
 
-        counter.read();
+        counter.readAsync()
+                .get();
 
         Instant end = Instant.now();
 

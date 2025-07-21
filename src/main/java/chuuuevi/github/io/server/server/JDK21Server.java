@@ -9,66 +9,43 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class JDK21Server {
 
     private static final Logger log = LoggerFactory.getLogger(JDK21Server.class);
-
-    private HttpServer server;
+    private final HttpServer server;
     private final Counter counter;
-    private final Executor executor;
 
-    public JDK21Server(int port, Counter counter, boolean asyncHandle) throws IOException {
+    public JDK21Server(int port, Counter counter) throws IOException {
         this.counter = counter;
-        this.executor = Executors.newVirtualThreadPerTaskExecutor();
         this.server = HttpServer.create(new InetSocketAddress(port), 0);
-        this.server.setExecutor(this.executor);
-        if (asyncHandle) {
-            server.createContext("/").setHandler(this::handleAsync);
-        } else {
-            server.createContext("/").setHandler(this::handleSync);
-        }
-
-        this.server.start();
-        log.info("jdk21-server startup at {}, async={}", port, asyncHandle);
+        this.server.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
+        this.server.createContext("/").setHandler(this::handleRead);
     }
 
-    private void handleSync(HttpExchange exchange) throws IOException {
+    public void start() {
+        this.server.start();
+        log.info("jdk21-server startup at {}", this.server.getAddress());
+    }
 
+    private void handleRead(HttpExchange exchange) throws IOException {
         counter.dealt(1);
         Long number = null;
         try {
-            number = counter.read();
+            number = counter.readAsync()
+                    .get();
         } catch (Exception e) {
-
         }
+
         byte[] respText = (number == null ? "-1" : number.toString()).getBytes(StandardCharsets.UTF_8);
-
         exchange.sendResponseHeaders(200, respText.length);
-        try (var os = exchange.getResponseBody()) {
-            os.write(respText);
+        try {
+
+            try (var os = exchange.getResponseBody()) {
+                os.write(respText);
+            }
+        } catch (IOException e) {
         }
-    }
-
-
-    private void handleAsync(HttpExchange exchange) throws IOException {
-        counter.dealt(1);
-
-        counter.readAsync().thenAcceptAsync(
-                (number) -> {
-                    byte[] respText = (number == null ? "-1" : number.toString()).getBytes(StandardCharsets.UTF_8);
-                    try {
-                        exchange.sendResponseHeaders(200, respText.length);
-                        try (var os = exchange.getResponseBody()) {
-                            os.write(respText);
-                        }
-                    } catch (IOException e) {
-
-                    }
-                },
-                this.executor
-        );
     }
 }

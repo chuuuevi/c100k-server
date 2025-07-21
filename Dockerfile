@@ -1,4 +1,4 @@
-FROM maven:3.9.8-amazoncorretto-21-al2023 as builder
+FROM docker.1ms.run/maven:3.9.8-amazoncorretto-21-al2023 AS builder
 
 WORKDIR /source
 
@@ -12,7 +12,7 @@ RUN mvn -DskipTests package
 
 # https://stackoverflow.com/questions/42208442/maven-docker-cache-dependencies
 
-FROM amazoncorretto:21-al2023
+FROM docker.1ms.run/amazoncorretto:21-al2023
 
 WORKDIR /app
 
