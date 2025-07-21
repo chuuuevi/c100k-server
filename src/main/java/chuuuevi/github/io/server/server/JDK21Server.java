@@ -40,12 +40,8 @@ public class JDK21Server {
 
         byte[] respText = (number == null ? "-1" : number.toString()).getBytes(StandardCharsets.UTF_8);
         exchange.sendResponseHeaders(200, respText.length);
-        try {
-
-            try (var os = exchange.getResponseBody()) {
-                os.write(respText);
-            }
-        } catch (IOException e) {
+        try (var os = exchange.getResponseBody()) {
+            os.write(respText);
         }
     }
 }
