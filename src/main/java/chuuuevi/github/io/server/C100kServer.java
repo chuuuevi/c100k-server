@@ -9,7 +9,6 @@ import java.io.IOException;
 
 public class C100kServer {
 
-
     public static void main(String[] args) throws IOException, ParseException {
         Options options = new Options();
         options.addOption(null, "http-port", true, "HTTP Port");

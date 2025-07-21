@@ -2,7 +2,7 @@ package chuuuevi.github.io.server.disruptor;
 
 import java.util.concurrent.CompletableFuture;
 
-public class Action {
+public class CountEvent {
 
     private boolean write;
     private long number;

@@ -1,32 +1,31 @@
 package chuuuevi.github.io.server.disruptor;
 
+import chuuuevi.github.io.server.thread.CpuAffinityThreadFactory;
 import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
-import com.lmax.disruptor.util.DaemonThreadFactory;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 public class Counter {
-    protected final Disruptor<Action> disruptor;
+    protected final Disruptor<CountEvent> disruptor;
 
     private long total;
 
     public Counter() {
         this.disruptor = new Disruptor<>(
-                Action::new,
+                CountEvent::new,
                 (int) Math.pow(2, 20),
-                new DisruptorThreadFactory("counter", true),
+                new CpuAffinityThreadFactory("counter-", true),
                 ProducerType.MULTI,
                 new YieldingWaitStrategy()
         );
 
-        this.disruptor.handleEventsWith(this::doAction);
+        this.disruptor.handleEventsWith(this::handleEvent);
         this.disruptor.start();
     }
 
-    private void doAction(Action e, long disruptorSequence, boolean endOfBatch) {
+    private void handleEvent(CountEvent e, long _1, boolean _2) {
         if (e.isWrite()) {
             this.total += e.getNumber();
         } else {
@@ -37,16 +36,16 @@ public class Counter {
         e.clear();
     }
 
-    private void writeTranslator(Action action, long sequence, long val) {
-        action.setNumber(val);
-        action.setFuture(null);
-        action.setWrite(true);
+    private void writeTranslator(CountEvent countEvent, long sequence, long val) {
+        countEvent.setNumber(val);
+        countEvent.setFuture(null);
+        countEvent.setWrite(true);
     }
 
-    private void readTranslator(Action action, long sequence, CompletableFuture<Long> future) {
-        action.setNumber(0);
-        action.setFuture(future);
-        action.setWrite(false);
+    private void readTranslator(CountEvent countEvent, long sequence, CompletableFuture<Long> future) {
+        countEvent.setNumber(0);
+        countEvent.setFuture(future);
+        countEvent.setWrite(false);
     }
 
     public void dealt(final long val) {

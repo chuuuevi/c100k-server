@@ -1,7 +1,5 @@
-package chuuuevi.github.io.server.disruptor;
+package chuuuevi.github.io.server.thread;
 
-
-import chuuuevi.github.io.server.C100kServer;
 import net.openhft.affinity.AffinityLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,15 +7,14 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class DisruptorThreadFactory implements ThreadFactory {
-    private static final Logger log = LoggerFactory.getLogger(DisruptorThreadFactory.class);
+public class CpuAffinityThreadFactory implements ThreadFactory {
+    private static final Logger log = LoggerFactory.getLogger(CpuAffinityThreadFactory.class);
 
     private final String threadNamePrefix;
     private final AtomicLong count;
-
     private final boolean cpuAffinity;
 
-    public DisruptorThreadFactory(String threadNamePrefix, final boolean cpuAffinity) {
+    public CpuAffinityThreadFactory(String threadNamePrefix, final boolean cpuAffinity) {
         this.threadNamePrefix = threadNamePrefix;
         this.count = new AtomicLong(0);
         this.cpuAffinity = cpuAffinity;
