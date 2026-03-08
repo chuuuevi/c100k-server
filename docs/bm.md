@@ -1,32 +1,24 @@
 
 # server is MacBookPro M4(MacOS 15.3.1)
 
-## jdk21-server with virtual thread
+## vertx + jdk25
 
 ```text
-wrk -t 4 -c 128 -d 30s http://127.0.0.1:22222
+wrk -t 4 -c 128 -d 30s --latency http://127.0.0.1:22222
 Running 30s test @ http://127.0.0.1:22222
   4 threads and 128 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency   725.86us  303.43us   4.54ms   80.76%
-    Req/Sec    41.33k     3.32k  143.23k    97.00%
-  4938655 requests in 30.10s, 390.92MB read
-Requests/sec: 164068.22
-Transfer/sec:     12.99MB
+    Latency   468.99us  100.57us   8.86ms   90.31%
+    Req/Sec    64.61k     6.34k  273.90k    99.58%
+  Latency Distribution
+     50%  462.00us
+     75%  527.00us
+     90%  555.00us
+     99%  606.00us
+  7719852 requests in 30.10s, 434.37MB read
+Requests/sec: 256472.83
+Transfer/sec:     14.43MB
 ```
-
-```text
-wrk -t 2 -c 190 -d 300s http://127.0.0.1:22222
-Running 5m test @ http://127.0.0.1:22222
-  2 threads and 190 connections
-  Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency     0.92ms  407.90us  34.34ms   80.70%
-    Req/Sec    87.83k     3.37k   95.71k    82.83%
-  52436776 requests in 5.00m, 4.04GB read
-Requests/sec: 174776.56
-Transfer/sec:     13.80MB
-```
-
 
 # server is c6i.2xlarge, wrk is t3.xlarge
 
