@@ -55,4 +55,44 @@ public class LongToFixedWidthBytes {
 
         return longBytes;
     }
+
+    public static void write(final long value, SetByte callback) {
+        if (value == Long.MIN_VALUE) {
+            for(int i =0; i < LONG_MIN.length; i++) {
+                callback.set(i, LONG_MIN[i]);
+            }
+            return;
+        }
+
+        int byteOffset = ARRAY_LENGTH - 1;
+        final boolean negate = value < 0;
+        boolean writeSign = false;
+        long normalization = Math.abs(value);
+        do {
+            if (normalization == 0 && byteOffset == ARRAY_LENGTH - 1) {
+                callback.set(byteOffset, (byte) ('0'));
+                byteOffset--;
+            }
+            if (normalization > 0) {
+                // to ASCII byte
+                callback.set(byteOffset, (byte) ('0' + (normalization % 10)));
+                byteOffset--;
+                normalization /= 10;
+            }
+            if (normalization == 0) {
+                if (negate && !writeSign) {
+                    callback.set(byteOffset,  (byte) ('-'));
+                    byteOffset--;
+                    writeSign = true;
+                    continue;
+                }
+                callback.set(byteOffset,  (byte) (' '));
+                byteOffset--;
+            }
+        } while (byteOffset >= 0);
+    }
+
+    public interface SetByte {
+        void set(int index, byte value);
+    }
 }

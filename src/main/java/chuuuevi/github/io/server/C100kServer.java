@@ -13,19 +13,19 @@ public class C100kServer {
     public static void main(String[] args) throws IOException, ParseException {
         Options options = new Options();
         options.addOption(null, "http-port", true, "HTTP Port");
+        options.addOption(null, "prefer-native-transport", true, "HTTP Port");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
         int port = cmd.hasOption("http-port") ? Integer.parseInt(cmd.getOptionValue("http-port")) : 22222;
+        boolean preferNativeTransport = cmd.hasOption("http-port");
 
         Counter counter = new Counter();
 
         CounterVerticle cv = new CounterVerticle(counter, port);
 
-        Vertx.vertx(
-                        new VertxOptions().
-                                setPreferNativeTransport(true)
-                )
-                .deployVerticle(cv);
+        Vertx.vertx(new VertxOptions().
+                setPreferNativeTransport(preferNativeTransport)
+        ).deployVerticle(cv);
     }
 }

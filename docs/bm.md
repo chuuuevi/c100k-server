@@ -1,23 +1,42 @@
 
 # server is MacBookPro M4(MacOS 15.3.1)
 
-## vertx + jdk25
+## vertx + jdk25 - kqueue
 
 ```text
-wrk -t 4 -c 128 -d 30s --latency http://127.0.0.1:22222
-Running 30s test @ http://127.0.0.1:22222
+wrk -t 4 -c 128 -d 30s --latency http://127.0.0.1:22222/delta
+Running 30s test @ http://127.0.0.1:22222/delta
   4 threads and 128 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency   468.99us  100.57us   8.86ms   90.31%
-    Req/Sec    64.61k     6.34k  273.90k    99.58%
+    Latency   467.22us  202.12us  11.50ms   77.68%
+    Req/Sec    65.50k    18.29k  105.78k    43.23%
   Latency Distribution
-     50%  462.00us
-     75%  527.00us
-     90%  555.00us
-     99%  606.00us
-  7719852 requests in 30.10s, 434.37MB read
-Requests/sec: 256472.83
-Transfer/sec:     14.43MB
+     50%  358.00us
+     75%  662.00us
+     90%  697.00us
+     99%  758.00us
+  7839938 requests in 30.10s, 441.13MB read
+Requests/sec: 260458.81
+Transfer/sec:     14.66MB
+```
+
+## vertx + jdk25 + kqueue
+
+```text
+wrk -t 4 -c 128 -d 30s --latency http://127.0.0.1:22222/delta
+Running 30s test @ http://127.0.0.1:22222/delta
+  4 threads and 128 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   492.28us  154.73us  11.08ms   96.04%
+    Req/Sec    61.75k     3.66k   67.37k    87.46%
+  Latency Distribution
+     50%  482.00us
+     75%  539.00us
+     90%  579.00us
+     99%    0.90ms
+  7397357 requests in 30.10s, 416.23MB read
+Requests/sec: 245750.74
+Transfer/sec:     13.83MB
 ```
 
 # server is c6i.2xlarge, wrk is t3.xlarge
