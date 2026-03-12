@@ -77,12 +77,12 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-resolver-dns-native-macos</artifactId>
-            <version>4.1.121.Final</version>
-            <classifier>osx-aarch_64</classifier>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.netty</groupId>-->
+<!--            <artifactId>netty-resolver-dns-native-macos</artifactId>-->
+<!--            <version>4.1.121.Final</version>-->
+<!--            <classifier>osx-aarch_64</classifier>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>io.netty</groupId>
@@ -126,6 +126,24 @@
                     <target>25</target>
                 </configuration>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.graalvm.buildtools</groupId>-->
+<!--                <artifactId>native-maven-plugin</artifactId>-->
+<!--                <version>0.10.6</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>compile-no-fork</goal>-->
+<!--                        </goals>-->
+<!--                        <phase>package</phase>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    <imageName>c100k-server</imageName>-->
+<!--                    <mainClass>chuuuevi.github.io.server.C100kServer</mainClass>-->
+<!--                    <buildArgs>-H:+PrintClassInitialization -H:+ReportExceptionStackTraces</buildArgs>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 

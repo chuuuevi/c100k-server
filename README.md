@@ -17,4 +17,10 @@ docker run --rm -it qyvlik/wrk -t 2 -c 128 -d 30s http://172.31.15.175:22221
 2. https://github.com/smallnest/C1000K-Servers
 3. https://raby.sh/1m-http-requests-per-second-using-nginx-and-ubuntu-1204-on-ec2.html
 
+## native-image
 
+```shell
+java -agentlib:native-image-agent=config-output-dir=src/main/resources/META-INF/native-image \
+  -jar \
+  target/c100k-server-0.1.1.jar
+```
