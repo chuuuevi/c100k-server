@@ -1,21 +1,31 @@
 package chuuuevi.github.io.server.biz;
 
+import chuuuevi.github.io.server.server.CounterVerticle;
 import chuuuevi.github.io.server.thread.CpuAffinityThreadFactory;
 import chuuuevi.github.io.server.thread.ResultDeffer;
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 
 public class Counter implements AutoCloseable {
-    protected final Disruptor<CountEvent> disruptor;
+    private final static Logger LOGGER = LoggerFactory.getLogger(Counter.class);
+
+    private final AtomicInteger startupCount;
+    private final AtomicInteger downCount;
+    private final Disruptor<CountEvent> disruptor;
     private final ResultDeffer<Long> resultDeffer;
 
     private long total;
 
     public Counter() {
+        this.startupCount = new AtomicInteger(0);
+        this.downCount = new AtomicInteger(0);
         this.disruptor = new Disruptor<>(
                 CountEvent::new,
                 (int) Math.pow(2, 20),
@@ -30,8 +40,11 @@ public class Counter implements AutoCloseable {
     }
 
     public void start() {
-        this.disruptor.start();
-        this.resultDeffer.start();
+        if (this.startupCount.incrementAndGet() == 1) {
+            LOGGER.info("Starting counter");
+            this.disruptor.start();
+            this.resultDeffer.start();
+        }
     }
 
     private void handleEvent(CountEvent e, long _1, boolean _2) {
@@ -81,7 +94,10 @@ public class Counter implements AutoCloseable {
 
     @Override
     public void close() {
-        this.disruptor.shutdown();
-        this.resultDeffer.close();
+        if (this.downCount.incrementAndGet() == 1) {
+            LOGGER.info("Stopping counter");
+            this.disruptor.shutdown();
+            this.resultDeffer.close();
+        }
     }
 }

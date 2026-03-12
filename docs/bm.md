@@ -8,16 +8,16 @@ wrk -t 4 -c 128 -d 30s --latency http://127.0.0.1:22222/delta
 Running 30s test @ http://127.0.0.1:22222/delta
   4 threads and 128 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency   467.22us  202.12us  11.50ms   77.68%
-    Req/Sec    65.50k    18.29k  105.78k    43.23%
+    Latency   456.11us  186.89us  10.79ms   75.88%
+    Req/Sec    66.59k    17.30k  109.83k    46.63%
   Latency Distribution
-     50%  358.00us
-     75%  662.00us
-     90%  697.00us
-     99%  758.00us
-  7839938 requests in 30.10s, 441.13MB read
-Requests/sec: 260458.81
-Transfer/sec:     14.66MB
+     50%  349.00us
+     75%  639.00us
+     90%  676.00us
+     99%  736.00us
+  7971078 requests in 30.10s, 448.51MB read
+Requests/sec: 264813.18
+Transfer/sec:     14.90MB
 ```
 
 ## vertx + jdk25 + kqueue

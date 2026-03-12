@@ -11,11 +11,15 @@ public class ResultDeffer<R> implements AutoCloseable {
     private final Disruptor<Event<R>> disruptor;
 
     public ResultDeffer(String name) {
+        this(name, false);
+    }
+
+    public ResultDeffer(String name, boolean multiThread) {
         this.disruptor = new Disruptor<>(
                 Event::new,
                 (int) Math.pow(2, 16),
                 new CpuAffinityThreadFactory(name, true),
-                ProducerType.MULTI,
+                multiThread ? ProducerType.MULTI : ProducerType.SINGLE,
                 new BlockingWaitStrategy()
         );
         this.disruptor.handleEventsWith(this::handleEvent);

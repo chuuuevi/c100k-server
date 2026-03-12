@@ -13,7 +13,7 @@ public class C100kServer {
     public static void main(String[] args) throws IOException, ParseException {
         Options options = new Options();
         options.addOption(null, "http-port", true, "HTTP Port");
-        options.addOption(null, "prefer-native-transport", true, "HTTP Port");
+        options.addOption(null, "prefer-native-transport", true, "Prefer Native Transport");
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
