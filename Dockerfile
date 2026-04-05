@@ -1,4 +1,4 @@
-FROM docker.1ms.run/maven:3.9.12-amazoncorretto-25 AS builder
+FROM maven:3.9.14-amazoncorretto-25 AS builder
 
 WORKDIR /source
 
@@ -12,12 +12,12 @@ RUN mvn -DskipTests package
 
 # https://stackoverflow.com/questions/42208442/maven-docker-cache-dependencies
 
-FROM docker.1ms.run/amazoncorretto:25
+FROM amazoncorretto:25
 
 WORKDIR /app
 
-COPY --from=builder /source/target/c100k-server-0.1.1-jar-with-dependencies.jar server.jar
+COPY --from=builder /source/target/c100k-server-0.1.2-jar-with-dependencies.jar server.jar
 
-EXPOSE 8080
+EXPOSE 22222
 
 ENTRYPOINT ["java", "-Dsun.net.httpserver.nodelay=true", "-jar", "/app/server.jar"]

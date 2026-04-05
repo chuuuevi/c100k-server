@@ -2,11 +2,11 @@
 
 ```bash
 docker build -t c100k .
-docker run --rm -it --network=host c100k --http-port=22221 --server-type=jdk21
+docker run --rm -it --network=host c100k --http-port=22222
 ```
 
 ```bash
-docker run --rm -it qyvlik/wrk -t 2 -c 128 -d 30s http://172.31.15.175:22221
+docker run --rm -it --network=host qyvlik/wrk -t 4 -c 128 -d 30s --latency http://127.0.0.1:22222
 ```
 
 ---
@@ -22,5 +22,5 @@ docker run --rm -it qyvlik/wrk -t 2 -c 128 -d 30s http://172.31.15.175:22221
 ```shell
 java -agentlib:native-image-agent=config-output-dir=src/main/resources/META-INF/native-image \
   -jar \
-  target/c100k-server-0.1.1.jar
+  target/c100k-server-0.1.2.jar
 ```

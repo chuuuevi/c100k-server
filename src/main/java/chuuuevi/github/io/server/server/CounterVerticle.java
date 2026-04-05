@@ -19,6 +19,7 @@ public class CounterVerticle extends AbstractVerticle {
     private final Counter counter;
     private final int port;
 
+    private final static AsciiString CONTENT_LENGTH = new AsciiString("content-length");
     private final static AsciiString CONTENT_LENGTH_20 = new AsciiString("20");
 
     public CounterVerticle(Counter counter, int port) {
@@ -47,7 +48,7 @@ public class CounterVerticle extends AbstractVerticle {
                     byteBuf.writerIndex(LongToFixedWidthBytes.ARRAY_LENGTH);
 
                     ctx.response()
-                            .putHeader("content-length", CONTENT_LENGTH_20)
+                            .putHeader(CONTENT_LENGTH, CONTENT_LENGTH_20)
                             .end(buffer);
                 }
             });
@@ -62,7 +63,7 @@ public class CounterVerticle extends AbstractVerticle {
                     byte[] lb = new byte[LongToFixedWidthBytes.ARRAY_LENGTH];
                     byte[] resp = LongToFixedWidthBytes.write(result, lb);
                     ctx.response()
-                            .putHeader("content-length", CONTENT_LENGTH_20)
+                            .putHeader(CONTENT_LENGTH, CONTENT_LENGTH_20)
                             .end(Buffer.buffer(resp));
                 }
             });
